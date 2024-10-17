@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Search Employee{% endblock %}
+
+{% block content %}
+
+    <form id="search-employee-form" class="form-section">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="search-id">Employee ID</label>
+                <input type="number" id="search-id" name="id" required>
+            </div>
+            <div class="form-group">
+                <label for="search-email">Email</label>
+                <input type="email" id="search-email" name="email" placeholder="optional">
+            </div>
+        </div>
+        <button type="submit">Search Employee</button>
+    </form>
+
+    <div class="employee-card" id="employee-info">
+        <img src="./../static/images/avatar.png" alt="Avatar" class="avatar">
+        <h2>Employee Information</h2>
+        <p><strong>ID:</strong> <span id="emp-id"></span></p>
+        <p><strong>First Name:</strong> <span id="first-name"></span></p>
+        <p><strong>Last Name:</strong> <span id="last-name"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Phone:</strong> <span id="phone"></span></p>
+        <p><strong>Department:</strong> <span id="department"></span></p>
+        <p><strong>Position:</strong> <span id="position"></span></p>
+        <p><strong>Hire Date:</strong> <span id="hire-date"></span></p>
+        <p><strong>Salary:</strong> ৳<span id="salary"></span></p>
+    </div>
+{% endblock %}

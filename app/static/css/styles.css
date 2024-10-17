@@ -1,0 +1,426 @@
+
+.navbar {
+    width: 100%;
+    background-color: #8b1df9;
+    height: 80px;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.container-fluid {
+    padding: 20px;
+    flex-grow: 1;
+    /* Ensures the container expands to fill the space */
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: flex-start;
+    /* Align content to the top */
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    /* Increase width to fit larger tables */
+    padding: 20px;
+    background-color: #8b1df9;
+    /* Set background for main container */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.layout {
+    display: flex;
+    /* Use flexbox for layout */
+    justify-content: space-between;
+    /* Space between nav and form */
+}
+
+.nav-card,
+.form-card {
+    background-color: #fff;
+    /* White background for cards */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(71, 71, 71, 0.1);
+    width: 100%;
+    /* Set width for cards */
+}
+
+.nav-card {
+    margin-right: 20px;
+    width: auto;
+    /* Space between nav card and form card */
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+    /* Space below headings */
+}
+
+.nav-buttons {
+    display: flex;
+    flex-direction: column;
+    /* Stack buttons vertically */
+    gap: 10px;
+    /* Space between buttons */
+}
+
+.nav-btn {
+    background-color: #9d45f6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center; /* Align text inside the button to the left */
+    width: 200px; /* Set a fixed width to keep the buttons consistent */
+    transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+    background-color: #6d1bbf;
+}
+.form-section {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    /* Space between form groups */
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    /* Space between columns in a row */
+}
+
+.form-row>div {
+    width: 48%;
+    /* Each column takes up nearly half of the row */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='number'],
+input[type='date'] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+button[type='submit'] {
+    background-color: #9d45f6;
+    color: white;
+    padding: 10 px;
+    border: none;
+    border-radius: 4 px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16 px;
+    transition: background-color .3 s ease;
+    height: 50px;
+    border-radius: 8px;
+    
+}
+
+
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+
+.container-fluid {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: flex-start;
+    /* Align content to the top */
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    /* Increase width to fit larger tables */
+    padding: 20px;
+    background-color:#8b1df9;
+    /* Set background for main container */
+    border-radius: 8px;
+    
+}
+
+.container2 {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+    background-color: #fff;
+    /* Ensure the table has a white background */
+}
+
+.employee-table th,
+.employee-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.employee-table th {
+    background-color: #6d1bbf;
+    color: white;
+    font-weight: bold;
+}
+
+.employee-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.employee-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.employee-table td {
+    color: #333;
+}
+
+.main-container2 {
+    width: 100%;
+    max-width: 1200px;
+    /* Ensure the container stretches enough */
+    padding: 20px;
+}
+
+.container-fluid2 {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Start content at the top */
+}
+
+nav .navbar-nav .nav-link {
+    display: inline-flex;
+    /* Use inline-flex for better alignment control */
+    justify-content: center;
+    /* Center text horizontally */
+    align-items: center;
+    /* Center text vertically */
+    background-color: white;
+    /* White background for the buttons */
+    color: #5f17a8;
+    /* Text color matching the navbar */
+    padding: 0;
+    /* Remove padding to use height for centering */
+    border-radius: 5px;
+    /* Rounded corners */
+    transition: transform 0.3s, background-color 0.3s;
+    /* Smooth transition effect */
+    margin: 5px;
+    /* Margin between buttons */
+
+    /* Fixed size for all buttons */
+    width: 120px;
+    /* Set a fixed width for each button */
+    height: 40px;
+    /* Set a fixed height for each button */
+}
+
+nav .navbar-nav .nav-link:hover {
+    transform: translateY(-5px);
+    /* Move the button up on hover */
+    background-color: #e0e0e0;
+    /* Change background on hover */
+}
+
+.search-container {
+    display: flex;
+    /* Use flexbox for layout */
+    justify-content: space-between;
+    /* Space between left and right sections */
+    align-items: flex-start;
+    /* Align items at the top */
+    padding: 20px;
+    /* Add padding around the container */
+}
+
+.form-section {
+    max-width: 300px;
+    /* Set a max-width for the form section */
+}
+
+.form-group {
+    margin-bottom: 15px;
+    /* Space between form groups */
+}
+
+input[type="number"],
+input[type="email"] {
+    width: 100%;
+    /* Ensure inputs take full width of their container */
+}
+
+.employee-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+    /* Space between form and card */
+    flex-grow: 1;
+    /* Allow card to grow and take available space */
+}
+
+.avatar {
+    border-radius: 50%;
+    /* Make the avatar circular */
+    width: 100px;
+    /* Set a fixed width for the avatar */
+    height: 100px;
+    /* Set a fixed height for the avatar */
+    margin-bottom: 20px;
+    /* Space below the avatar */
+}
+
+input[type='text'],
+input[type='email'],
+input[type='number'],
+input[type='date'] {
+    width: 100%;
+    padding: 10px; /* Increased padding for a more spacious feel */
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus effects */
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='number']:focus,
+input[type='date']:focus {
+    border-color: #9d45f6; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(157, 69, 246, 0.5); /* Subtle shadow effect on focus */
+}
+
+.gender-options {
+    display: flex;
+    gap: 45px;
+    margin-bottom: 10px;
+}
+
+.gender-options label {
+    
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-left:15px;
+    
+}
+
+
+select {
+   
+    width: 100%;
+    padding: 8px;
+    height: 45px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc; /* Light gray border */
+    font-size: 14px; /* Consistent font size */
+}
+
+select:focus {
+    border-color: #9d45f6; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(157, 69, 246, 0.5); /* Subtle shadow effect on focus */
+}
+
+
+
+/* Modern styling for textarea */
+#reason {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical; /* Allows resizing only vertically */
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+    height: 150px;
+
+}
+
+/* Styling when focused */
+#reason:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.employee-table {
+    border-collapse: collapse; /* Ensures borders are clean */
+    width: 100%; /* Full width for better alignment */
+}
+
+.employee-table th,
+.employee-table td {
+    padding: 12px 15px; /* Consistent padding */
+    border: 1px solid #ddd; /* Light gray border for clarity */
+    text-align: left; /* Align text to the left */
+}
+
+.employee-table th {
+    background-color: #6d1bbf; /* Dark header color */
+    color: white; /* White text for contrast */
+}
+
+.employee-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for even rows */
+}
+
+.employee-table tr:hover {
+    background-color: #f1f1f1; /* Highlight on hover */
+}
+
+.employee-table td {
+    color: #333; /* Text color for cells */
+}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}View Employees{% endblock %}
+
+{% block content %}
+<div class="container-fluid2">
+    <div class="main-container2">
+        <div class = "container2">
+            <h1>All Employees</h1>
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Department</th>
+                        <th>Position</th>
+                        <th>Hire Date</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.id }}</td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.last_name }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.phone }}</td>
+                        <td>{{ employee.department }}</td>
+                        <td>{{ employee.position }}</td>
+                        <td>{{ employee.hire_date }}</td>
+                        <td>৳{{ employee.salary }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

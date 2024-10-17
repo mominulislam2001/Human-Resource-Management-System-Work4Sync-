@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="layout">
+                <!-- Navigation Section -->
+                <div class="nav-card">
+                    <h2>Navigation</h2>
+                    <div class="nav-buttons">
+                        <button id="btn-add" class="nav-btn">Add Employee</button>
+                        <button id="btn-update" class="nav-btn">Update Employee</button>
+                        <button id="btn-delete" class="nav-btn">Delete Employee</button>
+                    </div>
+                </div>
+
+                <!-- Form Section -->
+                <div class="form-card">
+                    <!-- Add Employee Section -->
+                    <div id="add-employee-section">
+                        <h2>Add Employee</h2>
+                        <form id="add-employee-form">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div>
+                                        <label for="add-first-name">First Name</label>
+                                        <input type="text" id="add-first-name" name="first_name" required>
+                                    </div>
+                                    <div>
+                                        <label for="add-last-name">Last Name</label>
+                                        <input type="text" id="add-last-name" name="last_name" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div>
+                                        <label for="add-department">Department</label>
+                                        <input type="text" id="add-department" name="department" required>
+                                    </div>
+                                    <div>
+                                        <label for="add-position">Position</label>
+                                        <input type="text" id="add-position" name="position" required>
+                                    </div>
+                                </div>
+
+                                <!-- Gender Selection -->
+                                <div class="form-row">
+                                    <div>
+                                        <label>Gender</label>
+                                        <div class="gender-options">
+                                            <label><input type="radio" name="gender" value="male" > Male</label>
+                                            <label><input type="radio" name="gender" value="female"> Female</label>
+                                            <label><input type="radio" name="gender" value="other"> Other</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Role Selection -->
+                                    <div>
+                                        <label for="add-role">Role</label>
+                                        <select id="add-role" name="role" required>
+                                            <option value="">Select Role</option>
+                                            <option value="HR">HR</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Manager">Manager</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Hire Date and Salary -->
+                                <div class="form-row">
+                                    <div>
+                                        <label for="add-hire-date">Hire Date</label>
+                                        <input type="date" id="add-hire-date" name="hire_date" required>
+                                    </div>
+                                    <div>
+                                        <label for="add-salary">Salary</label>
+                                        <input type="number" id="add-salary" name="salary" step="0.01" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                         
+                            
+                            <!-- Manager Selection -->
+                            <div class="form-row">
+                                <div>
+                                    <label for="update-manager-id">Manager</label>
+                                    <select id="update-manager-id" name="manager_id">
+                                        <option value="">Select Manager</option>
+                                        {% for manager in managers %}
+                                            <option value="{{ manager.id }}">{{ manager.full_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="address">Address</label>
+                                    <input type="text" id="address" name="address" required>
+                                </div>
+                            </div>
+                            <div class='form-row'>
+                            
+                                <div>    <!-- Email and Phone Fields -->
+                                    <label for="add-email">Email</label>
+                                    <input type="email" id="add-email" name="email" required>
+                                </div>
+                                <div>
+                                    <label for="add-phone">Phone</label>
+                                    <input type="text" id="add-phone" name="phone">
+                                </div>
+                            </div>
+                           <!-- Submit Button -->
+                            <button type="submit">Add Employee</button>
+
+                        </form>
+                    </div>
+
+                    <!-- Update Employee Section -->
+                    <div id="update-employee-section" style="display: none;">
+                        <h2>Update Employee</h2>
+                        <form id="update-employee-form">
+                            <div class="form-group">
+                                <!-- Employee ID Field -->
+                                <div class="form-row">
+                                    <div>
+                                        <label for="update-id">Employee ID</label>
+                                        <input type="number" id="update-id" name="id" required>
+                                    </div>
+                                    <!-- Get Employee Info Button -->
+                                    <button class='nav-btn' type="button" id="fetch-employee" onclick="fetchEmployeeInfo()">Fetch</button>
+                                    
+                                </div>
+
+                                <!-- First Name and Last Name Fields -->
+                                <div class="form-row">
+                                    <div>
+                                        <label for="update-first-name">First Name</label>
+                                        <input type="text" id="update-first-name" name="first_name" required>
+                                    </div>
+                                    <div>
+                                        <label for="update-last-name">Last Name</label>
+                                        <input type="text" id="update-last-name" name="last_name" required>
+                                    </div>
+                                </div>
+
+                                <!-- Department and Position Fields -->
+                                <div class="form-row">
+                                    <div>
+                                        <label for="update-department">Department</label>
+                                        <input type="text" id="update-department" name="department" required>
+                                    </div>
+                                    <div>
+                                        <label for="update-position">Position</label>
+                                        <input type="text" id="update-position" name="position" required>
+                                    </div>
+                                </div>
+
+                                <!-- Gender Selection -->
+                                <div class="form-row">
+                                    <div>
+                                        <label>Gender</label>
+                                        <div class="gender-options">
+                                            <label><input type="radio" name="gender" value="male" required> Male</label>
+                                            <label><input type="radio" name="gender" value="female"> Female</label>
+                                            <label><input type="radio" name="gender" value="other"> Other</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Role Selection -->
+                                    <div>
+                                        <label for="update-role">Role</label>
+                                        <select id="update-role" name="role" required>
+                                            <option value="">Select Role</option>
+                                            <option value="HR">HR</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Manager">Manager</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Hire Date, Salary, and End Date Fields -->
+                                <div class="form-row">
+                                    <div>
+                                        <label for="update-hire-date">Hire Date</label>
+                                        <input type="date" id="update-hire-date" name="hire_date" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="update-end-date">End Date</label>
+                                        <input type="date" id="update-end-date" name="end_date">
+                                    </div>
+                                </div>
+                            </div>
+
+                              <!-- Email and Phone Fields -->
+                            <div class='form-row'>
+                                <div>
+                             
+                                    <label for="update-email">Email</label>
+                                    <input type="email" id="update-email" name="email" required>
+                                </div>
+                                <div>
+                                    <label for="update-phone">Phone</label>
+                                    <input type="text" id="update-phone" name="phone">
+                                </div>
+                            </div>
+                              <!-- Manager Selection -->
+                              <div class="form-row">
+                                <div>
+                                    <label for="update-manager-id">Manager ID</label>
+                                    <select id="update-manager-id" name="manager_id">
+                                        <option value="" >Select Manager</option>
+                                        {% for manager in managers %}
+                                            <option value="{{ manager.id }}" id="{{ manager.id }}" >{{ manager.full_name }}</option>
+                                        {% endfor %}
+                                     
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="address">Address</label>
+                                    <input type="text" id="address" name="address" required>
+                                </div>
+                            </div>
+
+                            <div class='form-row'>
+
+                                <div>
+                                    <label for="update-salary">Salary</label>
+                                    <input type="number" id="update-salary" name="salary" step="0.01" required>
+                                </div>
+
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit">Update Employee</button>
+                        </form>
+                    </div>
+
+                    <!-- Delete Employee Section -->
+                    <div id="delete-employee-section" style="display: none;">
+                        <h2>Delete Employee</h2>
+                        <form id="delete-employee-form">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div>
+                                        <label for="delete-id">Employee ID</label>
+                                        <input type="number" id="delete-id" name="id" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit">Delete Employee</button>
+                        </form>
+                    </div>
+
+                </div> <!-- End of form-card -->
+            </div> <!-- End of layout -->
+        </div> <!-- End of main-container -->
+    </div> <!-- End of container-fluid -->
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="layout">
+                <!-- Form Section -->
+                <div class="form-card">
+                    <!-- Apply For Leave Section -->
+                    <div id="apply-leave-section">
+                        <h2>Apply For Leave</h2>
+                        <form id="apply-leave-form">
+                            
+                            <!-- Start Date and End Date -->
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div>
+                                        <label for="start-date">Start Date</label>
+                                        <input type="date" id="start-date" name="start_date" required>
+                                    </div>
+                                    <div>
+                                        <label for="end-date">End Date</label>
+                                        <input type="date" id="end-date" name="end_date" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Leave Type and Reason -->
+                            <div class="form-row">
+                                <div>
+                                    <label for="leave-type">Leave Type</label>
+                                    <select id="leave-type" name="leave_type" required>
+                                        <option value="">Select Type</option>
+                                        {% for leave in leave_types %}
+                                            <option value="{{ leave.leave_id }}">{{ leave.leave_type }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            
+                                
+                                <div>
+                                    <label for="reason">Reason</label>
+                                    <textarea id="reason" name="reason"  required></textarea>
+                                </div>
+                           
+                            <!-- Submit Button -->
+                            <button type="submit">Submit Leave Application</button>
+
+                        </form>
+                    </div>
+                </div> <!-- End of form-card -->
+            </div> <!-- End of layout -->
+        </div> <!-- End of main-container -->
+    </div> <!-- End of container-fluid -->
+{% endblock %}
