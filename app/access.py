@@ -9,3 +9,6 @@ def is_employee():
 
 def is_manager():
     return current_user.is_authenticated and current_user.role == 'Manager'
+
+def is_admin():
+    return current_user.is_authenticated and current_user.role == 'Admin'

@@ -1,19 +1,17 @@
 {% extends "base.html" %}
 
-
-{% block title %}HR Dashboard{% endblock %}
+{% block title %}
+    Dashboard
+{% endblock %}
 
 {% block content %}
+   
 
-<div class="container-fluid">
-    <div class="main-container upper-left">
-        <div class="container">
-            <div class="employee-card">
-                <h2>Average Employee Salary</h2>
-                <p>The average salary of all employees is: <strong>${{ avg_salary }}</strong></p>
-            </div>
-        </div>
-    </div>
-</div>
 
+   <!-- Embed the Dash app inside an iframe -->
+   <iframe id="dashboard-iframe" src="/dashapp/" style="width: 100%; height: 800px; border: none; "></iframe>
+
+     
+   
 {% endblock %}
+

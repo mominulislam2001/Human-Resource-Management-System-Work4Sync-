@@ -19,29 +19,34 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     
-                    <li class="nav-item">
-                        <a class="nav-link" href="/apply_leave">Apply Leave</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="leaveDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Leave Management
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="leaveDropdown">
+                            <li><a class="dropdown-item" href="/apply_leave">Apply Leave</a></li>
+                            <li><a class="dropdown-item" href="/leave_requests">Requests</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/leave_requests">Requests</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/employee">Records</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="recordsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Employee Records
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="recordsDropdown">
+                            <li><a class="dropdown-item" href="/employee">Records</a></li>
+                            <li><a class="dropdown-item" href="/search">Search</a></li>
+                            <li><a class="dropdown-item" href="/view">View</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/dashboard">Dashboard</a>
                     </li>
+                   
                     <li class="nav-item">
-                        <a class="nav-link" href="/search">Search</a>
+                        <a class="nav-link" href="/employee_dashboard">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/view">View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/employee_dashboard">Profile </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout </a>
+                        <a class="nav-link" href="/logout">Logout</a>
                     </li>
                 </ul>
             </div>

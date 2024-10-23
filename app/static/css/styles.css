@@ -424,3 +424,74 @@ select:focus {
 .employee-table td {
     color: #333; /* Text color for cells */
 }
+
+
+#leaveDropdown,#recordsDropdown{
+ width:200px;
+}
+
+.nav-item .dropdown-menu {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px; /* Set a specific width for the dropdown */
+}
+
+.nav-item .dropdown-item {
+    transition: background-color 0.3s ease;
+    padding: 10px 15px; /* Add padding for better spacing */
+}
+
+.nav-item .dropdown-item:hover {
+    background-color: #f8f9fa; /* Light gray on hover */
+}
+
+.nav-link.dropdown-toggle {
+    color: #007bff; /* Bootstrap primary color */
+}
+
+.nav-link.dropdown-toggle:hover {
+    color: #0056b3; /* Darker shade on hover */
+}
+
+/* Modern Salary Card container */
+.modern-salary-card {
+    width: 150px;
+    height: 150px;
+    background-color: #f0f4f8;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+/* Add hover effect */
+.modern-salary-card:hover {
+    transform: scale(1.05);
+}
+
+/* Salary value styling */
+.modern-salary-card .card-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+/* Label for the card */
+.modern-salary-card .card-label {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+
+#fetch-employee{
+    
+    width: 102px;
+    height: 42px;
+    margin-right: 311px;
+    margin-top: 28px;
+}

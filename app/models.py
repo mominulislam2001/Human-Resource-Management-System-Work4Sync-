@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from flask import jsonify
 
 
+
 class User(UserMixin):
     def __init__(self, id, email, role):
         self.id = id
@@ -296,12 +297,19 @@ def update_status(new_status,leave_id,approved_by):
     
 
     
-def get_employee_all_info_by_id():
+def get_employee_all_info_by_id(emp_id):
     from app import mysql
     cursor = mysql.connection.cursor()
     
-    cursor.execute('SELECT * FROM')
-    cursor.fetchone()
+    cursor.execute(f'SELECT * FROM employees where id ={emp_id}')
+    employee_data = cursor.fetchone()
+    
+    return employee_data
+    
+def get_leaves_taken_this_year():
+    
+    return 
+
      
 def get_avg_salary_hr_dashboard():
     from app import mysql
@@ -312,3 +320,36 @@ def get_avg_salary_hr_dashboard():
 
     return avg_salary
 
+    
+
+
+
+
+# models.py
+from flask import current_app
+
+import pandas as pd
+
+def fetch_data(query):
+    """
+    Fetch data from the MySQL database using the provided SQL query.
+
+    Parameters:
+    query (str): The SQL query to execute.
+
+    Returns:
+    DataFrame: A pandas DataFrame containing the query results.
+    """
+    from app import mysql
+    # Use current_app to access mysql connection within the app context
+    with current_app.app_context():
+        cursor = mysql.connection.cursor()
+        try:
+            cursor.execute(query)
+            data = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+            df = pd.DataFrame(data, columns=columns)
+        finally:
+            cursor.close()  # Ensure the cursor is closed
+
+    return df

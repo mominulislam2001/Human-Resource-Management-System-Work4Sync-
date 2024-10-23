@@ -4,3 +4,4 @@ class Config:
     MYSQL_PASSWORD = 'Lig8h0us3@'
     MYSQL_DB = 'hrm_db'
     
+    

@@ -6,7 +6,9 @@ from app.models import get_user_by_email, User
 from app.access import is_hr,is_employee
 from app.models import get_avg_salary_hr_dashboard, get_all_employee_data,\
     get_searched_employee_data,get_all_manager_data,get_employee_info_by_id,get_all_leave_types,\
-    apply_for_leave,get_leave_request_by_manager_id,update_status
+    apply_for_leave,get_leave_request_by_manager_id,update_status,get_employee_all_info_by_id,\
+    get_leaves_taken_this_year 
+
 
 
 main = Blueprint('main', __name__)
@@ -31,26 +33,25 @@ def employee():
 
 
 
-@main.route('/employee_dashboard')
-@login_required
-def profile():
+# @main.route('/employee_dashboard', methods=['GET'])
+# @login_required
+# def profile():
     
- 
-    return render_template('employee_dashboard.html')
+#     employee_leaves = get_all_employee_data(current_user.id)
+#     employee_info = get_leaves_taken_this_year(current_user.id)
+#     employee_leaves = None
+#     employee_info = None
+#     return render_template('employee_dashboard.html')
 
 
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    
-    
     if not is_hr():
         return "Access Denied", 403
     
-    avg_salary = get_avg_salary_hr_dashboard()
-    
-    return render_template('hr_dashboard.html',avg_salary = avg_salary)
-
+    # Redirect to the Dash app
+    return render_template('hr_dashboard.html')
 
 @main.route('/search', methods=['GET'])
 @login_required
@@ -136,6 +137,7 @@ def logout():
 
 
 @main.route('/add_employee', methods=['POST'])
+@login_required
 def add_employee_route():
     if not is_hr():
         return "Access Denied", 403
@@ -149,6 +151,7 @@ def add_employee_route():
     
     
 @main.route('/update_employee/<int:employee_id>', methods=['PUT'])
+@login_required
 def update_employee_route(employee_id):
     if not is_hr():
         return "Access Denied", 403
@@ -162,6 +165,7 @@ def update_employee_route(employee_id):
 
 
 @main.route('/delete_employee/<int:employee_id>', methods=['DELETE'])
+@login_required
 def delete_employee_route(employee_id):
    
     if not is_hr():
@@ -174,6 +178,7 @@ def delete_employee_route(employee_id):
 
 
 @main.route('/get_employee/<int:employee_id>', methods=['GET'])
+@login_required
 def get_employee(employee_id):
     
     employee_info = get_employee_info_by_id(employee_id)
@@ -204,6 +209,7 @@ def get_employee(employee_id):
 
 
 @main.route('/apply_leave', methods=['GET'])
+@login_required
 def apply_leave_route():
     
   leave_types = get_all_leave_types()  # Assuming this function returns all employees
@@ -212,6 +218,7 @@ def apply_leave_route():
 
 
 @main.route('/apply_for_leave', methods=['POST'])
+@login_required
 def apply_leave():
     
     #  todo :  need to validate if employee has leaves in balance
@@ -228,28 +235,11 @@ def apply_leave():
     
     
 @main.route('/leave_requests',methods=['GET'])
+@login_required
 def leave_requests_route():
     
     leave_requests = get_leave_request_by_manager_id(current_user.id)
-    
-    # leave_requests = [
-    #     {
-    #         "employee_name":"Ayan",
-    #         "leave_type":"casual",
-    #         "start_date":135,
-    #         "end_date":123,
-    #         "reason":"vacation",
-    #         "status":"Pending"
-    #     },
-    #      {
-    #         "employee_name":"Ayan",
-    #         "leave_type":"casual",
-    #         "start_date":135,
-    #         "end_date":123,
-    #         "reason":"vacation",
-    #         "status":"Pending"
-    #     }
-    # ]
+   
     return render_template('leave_requests.html',leave_requests=leave_requests)
 
 
@@ -272,16 +262,9 @@ def update_leave_status(leave_id):
 @main.route('/employee_dashboard' , methods=['GET'])
 @login_required
 def employee_dashboard_route():
-    user_id = current_user.id
-    user_info = get_user_by_id(user_id)  # Fetch user info
-    leaves_taken = get_leaves_taken_this_year(user_id)  # Fetch leaves taken this year
+    # user_id = current_user.id
+    # user_info = get_employee_all_info_by_id(user_id)  # Fetch user info
+    # leaves_taken = get_leaves_taken_this_year(user_id)  # Fetch leaves taken this year
     return render_template('employee_dashboard.html')
 
 
-@main.route('/profile', methods=['GET'])
-@login_required
-def profile():
-    
-
-    return render_template('profile.html', user=user_info, leaves=leaves_taken)
-    

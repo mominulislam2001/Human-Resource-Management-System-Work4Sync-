@@ -2,13 +2,15 @@ from flask import Flask
 from flask_mysqldb import MySQL
 from flask_login import LoginManager
 from app.models import get_user_by_id
+from app.dash_app import create_dash_app
+
 
 mysql = MySQL()
 login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
-
+    dash_app = create_dash_app(app)
     # MySQL configurations
     app.config.from_object('app.config.Config')
     app.secret_key = 'your_secret_key'
@@ -20,6 +22,7 @@ def create_app():
     from app.routes import main
     app.register_blueprint(main)
 
+   
     return app
 
 
