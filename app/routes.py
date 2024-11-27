@@ -62,6 +62,16 @@ def search_employee_page():
     return render_template('search_employee.html')
 
 
+
+@main.route('/payroll', methods=['GET'])
+@login_required
+def payroll_route():
+    if not is_hr():
+        return "Access Denied", 403
+    
+    return render_template('payroll.html')
+
+
 @main.route('/search_employee', methods=['POST'])
 @login_required
 def search_employee_route():
@@ -103,7 +113,7 @@ def index():
     if is_hr():
         return dashboard()
     elif is_employee():
-        return render_template('employee_dashboard.html')
+        return render_template('employee_dashboard.html',employee=None)
     else:
         return "Access Denied", 403
 
@@ -259,12 +269,23 @@ def update_leave_status(leave_id):
         return jsonify({'error': str(e)})
    
     
-@main.route('/employee_dashboard' , methods=['GET'])
+@main.route('/employee_dashboard', methods=['GET'])
 @login_required
 def employee_dashboard_route():
-    # user_id = current_user.id
-    # user_info = get_employee_all_info_by_id(user_id)  # Fetch user info
-    # leaves_taken = get_leaves_taken_this_year(user_id)  # Fetch leaves taken this year
-    return render_template('employee_dashboard.html')
+    # Dummy employee information
+    employee_info = {
+        'name': 'Mominul Islam',
+        'email': 'ayan@gmail.com',
+        'position': 'HR',
+        'department': 'Data Analytics',
+        'joining_date': '2021-06-15'
+    }
 
+    # Dummy leave balance data
+    leave_balances = [
+        {'leave_type': 'Annual Leave', 'total_leaves': 20, 'used_leaves': 5, 'remaining_leaves': 15},
+        {'leave_type': 'Sick Leave', 'total_leaves': 10, 'used_leaves': 2, 'remaining_leaves': 8},
+        {'leave_type': 'Casual Leave', 'total_leaves': 12, 'used_leaves': 4, 'remaining_leaves': 8}
+    ]
 
+    return render_template('employee_dashboard.html', employee=employee_info, leave_balances=leave_balances)

@@ -1,8 +1,49 @@
 {% extends "base.html" %}
 
-{% block title %}Profile{% endblock %}
-
+{% block title %}Employee Profile{% endblock %}
 
 {% block content %}
-<h1> Coming Soon <h1>
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="profile-card">
+                <h1>Employee Profile</h1>
+                
+                <!-- Employee Information Section -->
+                <div class="employee-info">
+                    <h2>Personal Information</h2>
+                    <p><strong>Name:</strong> {{ employee.name }}</p>
+                    <p><strong>Email:</strong> {{ employee.email }}</p>
+                    <p><strong>Position:</strong> {{ employee.position }}</p>
+                    <p><strong>Department:</strong> {{ employee.department }}</p>
+                    <p><strong>Joining Date:</strong> {{ employee.joining_date }}</p>
+                </div>
+
+                <!-- Leave Balance Section -->
+                <div class="leave-balance">
+                    <h2>Leave Balance</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Total Leaves</th>
+                                <th>Used Leaves</th>
+                                <th>Remaining Leaves</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leave in leave_balances %}
+                                <tr>
+                                    <td>{{ leave.leave_type }}</td>
+                                    <td>{{ leave.total_leaves }}</td>
+                                    <td>{{ leave.used_leaves }}</td>
+                                    <td>{{ leave.remaining_leaves }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div> <!-- End of profile-card -->
+        </div> <!-- End of main-container -->
+    </div> <!-- End of container-fluid -->
 {% endblock %}

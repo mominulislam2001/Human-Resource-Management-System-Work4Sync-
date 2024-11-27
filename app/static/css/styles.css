@@ -495,3 +495,129 @@ select:focus {
     margin-right: 311px;
     margin-top: 28px;
 }
+
+
+
+
+
+/* Payroll Card Styles */
+.payroll-card {
+    background-color: #ffffff; /* White background for payroll card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px; /* Inner padding */
+}
+
+/* Heading Styles */
+h2 {
+    font-size: 24px; /* Font size for headings */
+    color: #333; /* Darker color for better readability */
+    margin-bottom: 15px; /* Space below headings */
+}
+
+/* Form Group Styles */
+.form-group {
+    margin-bottom: 15px; /* Space between form groups */
+}
+
+/* Form Row Styles */
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Space between items in the row */
+}
+
+/* Input and Select Styles */
+input[type="number"],
+select,
+textarea {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Inner padding for inputs */
+    border: 1px solid #ccc; /* Light border color */
+    border-radius: 4px; /* Rounded corners for inputs */
+    font-size: 16px; /* Font size for inputs */
+}
+
+/* Button Styles */
+button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text color for buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners for buttons */
+    padding: 10px 15px; /* Padding for buttons */
+    font-size: 16px; /* Font size for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* History Results Section Styles */
+#history-results {
+    margin-top: 20px; /* Space above results section */
+}
+
+/* Profile Card Styles */
+.profile-card {
+    background-color: #ffffff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Inner padding */
+}
+
+/* Heading Styles */
+h1 {
+    font-size: 28px; /* Main heading size */
+    color: #333; /* Darker color for better readability */
+}
+
+h2 {
+    font-size: 24px; /* Subheading size */
+    color: #8b1df9; /* Bootstrap primary color for subheadings */
+    margin-top: 20px; /* Space above subheadings */
+}
+
+/* Employee Info Styles */
+.employee-info p {
+    font-size: 16px; /* Font size for personal info */
+    margin: 5px 0; /* Space between paragraphs */
+}
+
+/* Leave Balance Table Styles */
+.leave-balance table {
+    width: 100%; /* Full width table */
+    border-collapse: collapse; /* Remove gaps between cells */
+    margin-top: 15px; /* Space above the table */
+}
+
+.leave-balance th, .leave-balance td {
+    border: 1px solid #ccc; /* Light border for table cells */
+    padding: 10px; /* Inner padding for cells */
+    text-align: left; /* Align text to the left */
+}
+
+.leave-balance th {
+    background-color: #f8f9fa; /* Light background for header cells */
+}
+
+.btn-custom {
+    background-color: #9d45f6;
+    color: white;
+    padding: 10 px;
+    border: none;
+    border-radius: 4 px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16 px;
+    transition: background-color .3 s ease;
+    height: 50px;
+    border-radius: 8px;
+}
+
+.btn-custom:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.btn-custom:active {
+    background-color: #004494; /* Even darker shade when active */
+}
