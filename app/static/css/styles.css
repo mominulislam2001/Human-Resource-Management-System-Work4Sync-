@@ -1,4 +1,3 @@
-
 .navbar {
     width: 100%;
     background-color: #8b1df9;
@@ -620,4 +619,28 @@ h2 {
 
 .btn-custom:active {
     background-color: #004494; /* Even darker shade when active */
+}
+
+
+
+
+select {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding for better touch targets */
+    border: 1px solid #ced4da; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #ffffff; /* White background */
+    color: #343a40; /* Dark text color for visibility */
+}
+
+/* Style for options within select */
+select option {
+    color: #343a40; /* Dark text color for options */
+    background-color: #ffffff; /* Ensure option background is white */
+}
+
+/* Optional: Style for when dropdown is focused */
+select:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
 }

@@ -7,13 +7,13 @@ from app.access import is_hr,is_employee
 from app.models import get_avg_salary_hr_dashboard, get_all_employee_data,\
     get_searched_employee_data,get_all_manager_data,get_employee_info_by_id,get_all_leave_types,\
     apply_for_leave,get_leave_request_by_manager_id,update_status,get_employee_all_info_by_id,\
-    get_leaves_taken_this_year 
+    get_leaves_taken_this_year,insert_payroll_data,fetch_payroll_history
+from datetime import datetime
 
+from fpdf import FPDF  # Use fpdf or any other library for PDF generation
 
 
 main = Blueprint('main', __name__)
-
-
 
 
 
@@ -24,24 +24,10 @@ def employee():
     if not is_hr():
         return "Access Denied", 403
     
-    
     # Fetch all employees to populate as managers
     managers = get_all_manager_data()  # Assuming this function returns all employees
     
     return render_template('employee_form.html' , managers=managers)
-
-
-
-
-# @main.route('/employee_dashboard', methods=['GET'])
-# @login_required
-# def profile():
-    
-#     employee_leaves = get_all_employee_data(current_user.id)
-#     employee_info = get_leaves_taken_this_year(current_user.id)
-#     employee_leaves = None
-#     employee_info = None
-#     return render_template('employee_dashboard.html')
 
 
 @main.route('/dashboard')
@@ -51,7 +37,7 @@ def dashboard():
         return "Access Denied", 403
     
     # Redirect to the Dash app
-    return render_template('hr_dashboard.html')
+    return render_template('hr_dashboard.html',)
 
 @main.route('/search', methods=['GET'])
 @login_required
@@ -62,14 +48,15 @@ def search_employee_page():
     return render_template('search_employee.html')
 
 
-
 @main.route('/payroll', methods=['GET'])
 @login_required
 def payroll_route():
     if not is_hr():
         return "Access Denied", 403
     
-    return render_template('payroll.html')
+    employees = get_all_employee_data()
+    
+    return render_template('payroll.html',employees=employees)
 
 
 @main.route('/search_employee', methods=['POST'])
@@ -83,7 +70,7 @@ def search_employee_route():
     employee_id = data.get('id')
     employee_email = data.get('email')
     
-    # Call the function to get searched employee data
+    
     employee_data = get_searched_employee_data(employee_id=employee_id, employee_email=employee_email)
     
     if not employee_data:
@@ -289,3 +276,108 @@ def employee_dashboard_route():
     ]
 
     return render_template('employee_dashboard.html', employee=employee_info, leave_balances=leave_balances)
+
+
+
+
+
+
+from flask import jsonify, request, send_from_directory
+from datetime import datetime
+import os
+
+@main.route('/process_payroll', methods=['POST'])
+def process_payroll():
+    employee_id = request.form['employee_id']
+    salary = float(request.form['salary'])
+    deductions = float(request.form.get('deductions', 0))
+    bonuses = float(request.form.get('bonuses', 0))
+
+    # Calculate total pay
+    total_pay = salary - deductions + bonuses
+    
+    print(total_pay)
+    employee = insert_payroll_data(employee_id, salary, deductions, bonuses, total_pay)
+    
+    if not employee:
+        return jsonify(success=False, message='Employee not found.')
+
+    employee_first_name = employee[0]
+    employee_last_name = employee[1]
+    position = employee[2]
+    
+    # Get the current month as a string
+    month = datetime.now().strftime('%B')  # e.g., "November"
+    
+    # Generate PDF slip
+    slip_path = f'/slips/{employee_first_name}_{employee_last_name}_{month}_payroll_slip.pdf'
+    file_name = f'{employee_first_name}_{employee_last_name}_{month}_payroll_slip.pdf'
+    generate_pdf_slip(employee_first_name + " " + employee_last_name, position, month, salary, deductions, bonuses, total_pay)
+    
+    # Return JSON response with all necessary data including slip URL
+    return jsonify(success=True,
+                   employee_name=f"{employee_first_name} {employee_last_name}",
+                   position=position,
+                   month=month,
+                   salary=salary,
+                   deductions=deductions,
+                   bonuses=bonuses,
+                   total_pay=total_pay,
+                   slip_url=slip_path,
+                   file_name=file_name)  # Include slip URL in response
+
+
+
+from flask import send_from_directory
+
+@main.route('/slips/<path:filename>', methods=['GET'])
+def download_slip(filename):
+    return send_from_directory('slips', filename)
+
+
+def generate_pdf_slip(employee_name, position, month, salary, deductions, bonuses, total_pay):
+    pdf = FPDF()
+    pdf.add_page()
+    
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(0, 10, 'Payroll Slip', ln=True)
+    
+    pdf.set_font("Arial", '', 12)
+    pdf.cell(0, 10, f'Employee Name: {employee_name}', ln=True)
+    pdf.cell(0, 10, f'Position: {position}', ln=True)
+    pdf.cell(0, 10, f'Month: {month}', ln=True)
+    
+    pdf.cell(0, 10, f'Base Salary: ${salary:.2f}', ln=True)
+    pdf.cell(0, 10, f'Deductions: ${deductions:.2f}', ln=True)
+    pdf.cell(0, 10, f'Bonuses: ${bonuses:.2f}', ln=True)
+    pdf.cell(0, 10, f'Total Pay: ${total_pay:.2f}', ln=True)
+
+    # Save PDF to a file
+    slip_path = f'slips/{employee_name.replace(" ", "_")}_{month}_payroll_slip.pdf'
+    pdf.output(slip_path)
+
+    return slip_path 
+
+
+@main.route('/download/<file_name>')
+def download_file(file_name):
+    directory = "D:/Projects/HRM_app/slips"  # Adjust to your actual directory
+    return send_from_directory(directory, file_name, as_attachment=True)
+
+
+
+
+
+
+@main.route('/payroll_history', methods=['GET', 'POST'])
+def payroll_history():
+    if request.method == 'POST':
+        employee_id = request.form.get('employee_id')
+        if employee_id:
+            payroll_history = fetch_payroll_history(employee_id)
+            employees = get_all_employee_data()
+            return render_template('payroll_history.html', employees=employees, payroll_history=payroll_history)
+    
+    # For GET request, just render the page with the list of employees
+    employees = get_all_employee_data()
+    return render_template('payroll_history.html', employees=employees, payroll_history=None)

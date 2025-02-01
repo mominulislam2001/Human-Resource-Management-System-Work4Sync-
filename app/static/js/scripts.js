@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
-   
     
 });
 
@@ -289,4 +288,61 @@ function fetchEmployeeInfo() {
 }
 
 
+document.getElementById('payroll-management-form')?.addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission
 
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('/process_payroll', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log(data);
+        if (data.success) {
+            // Populate the payroll slip section with data
+            document.getElementById('slip-employee-name').innerText = data.employee_name;
+            document.getElementById('slip-position').innerText = data.position;
+            document.getElementById('slip-month').innerText = data.month;
+            document.getElementById('slip-salary').innerText = data.salary.toFixed(2);
+            document.getElementById('slip-deductions').innerText = data.deductions.toFixed(2);
+            document.getElementById('slip-bonuses').innerText = data.bonuses.toFixed(2);
+            document.getElementById('slip-total-pay').innerText = data.total_pay.toFixed(2);
+
+            // Set the download link dynamically
+            const downloadButton = document.getElementById('download-slip');
+            downloadButton.onclick = function () {
+                downloadSlip(data.file_name);
+            };
+        } else {
+            alert(data.message); // Show error message if any
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while processing payroll. Please try again.'); // Show a user-friendly error message
+    }
+});
+
+function downloadSlip(file_name) {
+    // Construct the correct URL for downloading
+    const fileUrl = `/download/${file_name}`; // Assuming the backend serves files from this route
+    const link = document.createElement('a');
+    link.href = fileUrl; // Use the backend-served URL
+    link.download = file_name; // Specify the file name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function printSlip() {
+    // Your existing printSlip function logic
+}
+    function printSlip() {
+        // Logic to print the slip
+        window.print();
+    }
+
+
+   

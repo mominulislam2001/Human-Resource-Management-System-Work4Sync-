@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <form id="payroll-history-form" method="POST" action="/payroll_history">
+        <div class="form-group">
+            <label for="history-employee-select">Select Employee</label>
+            <select id="history-employee-select" name="employee_id" required>
+                <option value="" disabled selected>Select Employee</option>
+                {% for employee in employees %}
+                    <option style = "color:black;"value="{{ employee.id }}">{{ employee.first_name + " " + employee.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">View Payroll History</button>
+    </form>
+
+    <hr>
+    
+    {% if payroll_history %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Salary</th>
+                    <th>Deductions</th>
+                    <th>Bonuses</th>
+                    <th>Total Pay</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in payroll_history %}
+                    <tr>
+                        <td>{{ record.month }}</td>
+                        <td>{{ record.salary }}</td>
+                        <td>{{ record.deductions }}</td>
+                        <td>{{ record.bonuses }}</td>
+                        <td>{{ record.total_pay }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No payroll history available for the selected employee.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

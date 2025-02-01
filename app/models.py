@@ -3,7 +3,6 @@ from flask_login import UserMixin
 from flask import jsonify
 
 
-
 class User(UserMixin):
     def __init__(self, id, email, role):
         self.id = id
@@ -11,7 +10,7 @@ class User(UserMixin):
         self.role = role
 
 def get_user_by_id(user_id):
-    from app import mysql  # Move import inside the function to avoid circular import
+    from app import mysql  
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT id,email,role FROM employees WHERE id=%s', (user_id,))
     user = cursor.fetchone()
@@ -21,19 +20,18 @@ def get_user_by_id(user_id):
     return None
 
 def get_user_by_email(email):
-    from app import mysql  # Move import inside the function
+    from app import mysql  
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT id,email,role,password FROM employees WHERE email=%s', (email,))
     user = cursor.fetchone()
     cursor.close()
     if user:
-        return user  # Return tuple (id,email,role,password,)
+        return user  
     return None
 
 def add_employee(data):
-    from app import mysql  # Move import inside the function
-    
-    
+    from app import mysql  
+   
    
     first_name = data['first_name']
     last_name = data['last_name']
@@ -59,7 +57,7 @@ def add_employee(data):
     cursor.close()
 
 def update_employee(employee_id, data):
-    from app import mysql  # Move import inside the function
+    from app import mysql  
     cursor = mysql.connection.cursor()
     if data['end_date'] == '':
         data['end_date'] = None
@@ -75,7 +73,7 @@ def update_employee(employee_id, data):
     cursor.close()
 
 def delete_employee(employee_id):
-    from app import mysql  # Move import inside the function
+    from app import mysql  
     
     cursor = mysql.connection.cursor()
     cursor.execute('DELETE FROM employees WHERE id=%s', (employee_id,))
@@ -85,12 +83,12 @@ def delete_employee(employee_id):
 
 
 def get_all_employee_data():
-    from app import mysql  # Importing mysql inside the function to avoid circular imports
+    from app import mysql 
     
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT id, first_name, last_name, email, phone, department, position, hire_date, salary FROM employees')
     
-    employees = cursor.fetchall()  # Fetch all rows from the result
+    employees = cursor.fetchall()  
     cursor.close()
     
     employee_list = []
@@ -113,20 +111,20 @@ def get_all_employee_data():
 
 
 def get_searched_employee_data(employee_id=None, employee_email=None):
-    from app import mysql  # Importing mysql inside the function to avoid circular imports
+    from app import mysql 
     
     employee = None
     
     if employee_id:
         cursor = mysql.connection.cursor()
         cursor.execute(f'SELECT id, first_name, last_name, email, phone, department, position, hire_date, salary FROM employees WHERE id = %s', (employee_id,))
-        employee = cursor.fetchone()  # Fetch one row from the result
+        employee = cursor.fetchone()  
         cursor.close()
     
     elif employee_email:
         cursor = mysql.connection.cursor()
         cursor.execute(f'SELECT id, first_name, last_name, email, phone, department, position, hire_date, salary FROM employees WHERE email = %s', (employee_email,))
-        employee = cursor.fetchone()  # Fetch one row from the result
+        employee = cursor.fetchone()  
         cursor.close()
 
     if employee:
@@ -138,28 +136,26 @@ def get_searched_employee_data(employee_id=None, employee_email=None):
             'phone': employee[4],
             'department': employee[5],
             'position': employee[6],
-            'hire_date': str(employee[7]),  # Convert date to string if necessary
-            'salary': str(employee[8])  # Convert salary to string if necessary
+            'hire_date': str(employee[7]),
+            'salary': str(employee[8])  
         }
         
         return employee_dict
 
     return None
 
-# logged in user information fetching   
 def get_employee_info_by_id(emp_id):
     
-    from app import mysql  # Move import inside the function
+    from app import mysql 
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT id,first_name, last_name, salary, department, position, gender, role, hire_date, end_date,email, phone,manager_id,address FROM employees WHERE id=%s', (emp_id,))
     employee = cursor.fetchone()
     cursor.close()
     if employee:
-        return employee  # Return tuple (id,email,role,password,)
+        return employee  
    
     return None
 
-# get all user information
 
 
 def get_all_manager_data():
@@ -321,27 +317,15 @@ def get_avg_salary_hr_dashboard():
     return avg_salary
 
     
-
-
-
-
 # models.py
 from flask import current_app
 
 import pandas as pd
 
 def fetch_data(query):
-    """
-    Fetch data from the MySQL database using the provided SQL query.
-
-    Parameters:
-    query (str): The SQL query to execute.
-
-    Returns:
-    DataFrame: A pandas DataFrame containing the query results.
-    """
+    
     from app import mysql
-    # Use current_app to access mysql connection within the app context
+    
     with current_app.app_context():
         cursor = mysql.connection.cursor()
         try:
@@ -350,6 +334,147 @@ def fetch_data(query):
             columns = [desc[0] for desc in cursor.description]
             df = pd.DataFrame(data, columns=columns)
         finally:
-            cursor.close()  # Ensure the cursor is closed
+            cursor.close()  
 
     return df
+
+
+
+def get_dashboard_data(department):
+    from app import mysql
+
+    
+    data = dict()
+
+ 
+    with mysql.connection.cursor() as cursor:
+        
+        if department == 'All':
+            cursor.execute('SELECT AVG(salary) FROM employees;')
+        else:
+            cursor.execute('SELECT AVG(salary) FROM employees WHERE department = %s;', (department,))
+        
+        avg_salary = cursor.fetchone()[0]  
+        
+        
+        if avg_salary is None:
+            avg_salary = 0  
+       
+        if department == 'All':
+            cursor.execute('SELECT COUNT(*) FROM employees;')
+        else:
+            cursor.execute('SELECT COUNT(*) FROM employees WHERE department = %s;', (department,))
+        
+        total_employees = cursor.fetchone()[0]
+        
+        if department == 'All':
+            cursor.execute('SELECT SUM(salary) as total_salary FROM employees;')
+        else:
+            cursor.execute('SELECT SUM(salary) as salary FROM employees WHERE department = %s;', (department,))
+            
+        total_salary =   cursor.fetchone()[0]
+            
+      
+        
+
+    # Populate the data dictionary
+    data['average_salary'] = avg_salary
+    data['total_employees'] = total_employees
+    data['total_salary_employees'] = total_salary
+    return data
+
+
+
+
+import pandas as pd
+
+def get_dashboard_data_2(department):
+    
+    from app import mysql
+
+    # Use a context manager for cursor
+    with mysql.connection.cursor() as cursor:
+        # Query to get average salary for each department
+        cursor.execute('SELECT department, AVG(salary) AS average_salary FROM employees GROUP BY department;')
+        
+        # Fetch all results
+        results = cursor.fetchall()
+
+    # Create a DataFrame from the results
+    df = pd.DataFrame(results, columns=['Department', 'Average Salary'])
+
+    # Optionally: Add total employees per department
+    total_employees_query = 'SELECT department, COUNT(*) AS total_employees FROM employees GROUP BY department;'
+    
+    with mysql.connection.cursor() as cursor:
+        cursor.execute(total_employees_query)
+        total_results = cursor.fetchall()
+    
+    # Create a DataFrame for total employees
+    total_df = pd.DataFrame(total_results, columns=['Department', 'Total Employees'])
+
+    # Merge the two DataFrames on 'Department'
+    merged_df = pd.merge(df, total_df, on='Department', how='outer')
+
+    return merged_df
+
+
+def insert_payroll_data(employee_id, salary, deductions, bonuses, total_pay): 
+    from app import mysql
+    
+    employee = None
+    with mysql.connection.cursor() as cursor:
+        
+        cursor.execute(
+            "INSERT INTO payroll (employee_id, salary, deductions, bonuses, total_pay, created_at) VALUES (%s, %s, %s, %s, %s, NOW())",
+            (employee_id, salary, deductions, bonuses, total_pay)
+        )
+        
+        mysql.connection.commit()
+
+        
+        cursor.execute("SELECT first_name,last_name, position FROM employees WHERE id = %s", (employee_id,))
+        employee = cursor.fetchone()
+        print(employee)
+    
+    return employee
+
+
+# Fetch payroll history for a specific employee
+def fetch_payroll_history(employee_id):
+    from app import mysql
+
+    query = """
+    SELECT 
+        MONTH(created_at) AS month, 
+        salary, 
+        deductions, 
+        bonuses, 
+        (salary - deductions + bonuses) AS total_pay 
+    FROM payroll 
+    WHERE employee_id = %s 
+    ORDER BY MONTH(created_at) DESC
+    """
+
+    try:
+        with mysql.connection.cursor() as cursor:
+            cursor.execute(query, (employee_id,))  # Use parameterized query to prevent SQL injection
+            results = cursor.fetchall()
+            
+        # Map results to a list of dictionaries
+        payroll_history = [
+            {
+                'month': row[0],
+                'salary': row[1],
+                'deductions': row[2],
+                'bonuses': row[3],
+                'total_pay': row[4]
+            }
+            for row in results
+        ]
+
+        return payroll_history
+
+    except Exception as e:
+        print(f"Error fetching payroll history: {e}")
+        return []

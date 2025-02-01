@@ -1,243 +1,157 @@
 import dash
-from dash import dcc, html
+from dash import dcc, html, Input, Output
 import plotly.graph_objs as go
-from flask import Flask
+import pandas as pd
+from app.models import get_dashboard_data,get_dashboard_data_2 # Assuming this function fetches data from your database
+
+
+
+
 
 def create_dash_app(flask_app):
+    
     dash_app = dash.Dash(__name__, server=flask_app, url_base_pathname='/dashapp/')
 
-    # Sample data for the dashboard (Dummy Data)
     avg_salary = 50000
     avg_performance_score = 75
     total_employees = 70
 
-    # Dummy data for Total Employees by Department
-    total_employees_df = {
-        'department': ['HR', 'Engineering', 'Marketing', 'Sales'],
-        'total': [10, 25, 15, 20]
-    }
-
-    # Dummy data for Average Salary by Department
-    avg_salary_df = {
-        'department': ['HR', 'Engineering', 'Marketing', 'Sales'],
-        'avg_salary': [60000, 80000, 55000, 70000]
-    }
-
-    # Additional data for line plots
-    average_salaries = [48000, 50000, 52000, 55000, 54000]
-    performance_scores = [70, 75, 80, 85, 90]
-    
-    # Define x-axis for trends
-    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
-
-    # Define color shades based on #8b1df9
-    colors = ['#8b1df9', '#a94cfa', '#c37bfb', '#d6a3fc']
-
-    # Layout of the Dash app
     dash_app.layout = html.Div(style={
         "fontFamily": "Arial, sans-serif",
         "backgroundColor": "#f4f4f4",
-        "padding": "20px",
+        "padding": "5px",
         "boxSizing": "border-box"
+        
     }, children=[
-        
-        # Container for metrics cards
-        html.Div(style={
-            'display': 'flex',
-            'justifyContent': 'space-between',
-            'flexWrap': 'wrap',
-            'marginBottom': '20px'
-        }, children=[
+
+        html.Div([
             
-            # Average Salary Card
-            html.Div(style={
-                "width": "30%",
-                "padding": "10px",
-                "backgroundColor": "#ffffff",
-                "borderRadius": "8px",
-                "boxShadow": "0 2px 4px rgba(0,0,0,0.1)",
-                "textAlign": "center"
-            }, children=[
-                html.Div(f"${avg_salary}", style={
-                    "fontSize": "24px",
-                    "fontWeight": "bold",
-                    "color": "#333"
-                }),
-                html.Div("Average Salary", style={
-                    "fontSize": "14px",
-                    "color": "#777"
-                })
-            ]),
-
-            # Average Employee Performance Score Card
-            html.Div(style={
-                "width": "30%",
-                "padding": "10px",
-                "backgroundColor": "#ffffff",
-                "borderRadius": "8px",
-                "boxShadow": "0 2px 4px rgba(0,0,0,0.1)",
-                "textAlign": "center"
-            }, children=[
-                html.Div(f"{avg_performance_score}", style={
-                    "fontSize": "24px",
-                    "fontWeight": "bold",
-                    "color": "#333"
-                }),
-                html.Div("Avg Employee Performance Score", style={
-                    "fontSize": "14px",
-                    "color": "#777"
-                })
-            ]),
-
-            # Total Employees Card
-            html.Div(style={
-                "width": "30%",
-                "padding": "10px",
-                "backgroundColor": "#ffffff",
-                "borderRadius": "8px",
-                "boxShadow": "0 2px 4px rgba(0,0,0,0.1)",
-                "textAlign": "center"
-            }, children=[
-                html.Div(f"{total_employees}", style={
-                    "fontSize": "24px",
-                    "fontWeight": "bold",
-                    "color": "#333"
-                }),
-                html.Div("Total Employees", style={
-                    "fontSize": "14px",
-                    "color": "#777"
-                })
-            ]),
-            
-        ]),
-
-        # Container for horizontal alignment of graphs
-        html.Div(style={
-            'display': 'flex',
-            'justifyContent': 'space-around',
-            'flexWrap': 'wrap',
-            'marginBottom': '20px'
-        }, children=[
-            
-            # Total Employees by Department Bar Chart
-            dcc.Graph(
-                id='total-employees',
-                figure={
-                    'data': [
-                        go.Bar(
-                            x=total_employees_df['department'],
-                            y=total_employees_df['total'],
-                            name='Total Employees',
-                            marker=dict(color=colors[0])  
-                        )
-                    ],
-                    'layout': go.Layout(
-                        title='Total Employees by Department',
-                        titlefont=dict(size=16),
-                        xaxis={'title': 'Department'},
-                        yaxis={'title': 'Total Employees'},
-                        plot_bgcolor='#f4f4f4',  
-                        paper_bgcolor='#f4f4f4',  
-                        font=dict(color='#555'),
-                        margin=dict(l=60, r=20, t=50, b=40)
-                    )
-                },
-                style={"width": "40%", "height": "250px"}
-            ),
-
-            # Average Salary by Department Bar Chart
-            dcc.Graph(
-                id='avg-salary',
-                figure={
-                    'data': [
-                        go.Bar(
-                            x=avg_salary_df['department'],
-                            y=avg_salary_df['avg_salary'],
-                            name='Average Salary',
-                            marker=dict(color=colors[1])  
-                        )
-                    ],
-                    'layout': go.Layout(
-                        title='Average Salary by Department',
-                        titlefont=dict(size=16),
-                        xaxis={'title': 'Department'},
-                        yaxis={'title': 'Average Salary'},
-                        plot_bgcolor='#f4f4f4',  
-                        paper_bgcolor='#f4f4f4',  
-                        font=dict(color='#555'),
-                        margin=dict(l=60, r=20, t=50, b=40)
-                    )
-                },
-                style={"width": "40%", "height": "250px"}
-            ),
-            
-        ]),
-
-        # Line plots for trends in average salary and performance scores
-        html.Div(style={
-            'display': 'flex',
-            'justifyContent': 'space-around',
-            'flexWrap': 'wrap'
-        }, children=[
-            
-            # Average Salary Trend Line Plot
-            dcc.Graph(
-                id='avg-salary-trend',
-                figure={
-                    'data': [
-                        go.Scatter(
-                            x=months,
-                            y=average_salaries,
-                            mode='lines+markers',
-                            name='Average Salary Trend',
-                            line=dict(color='#007bff')
-                        )
-                    ],
-                    'layout': go.Layout(
-                        title='Average Salary Trend Over Months',
-                        titlefont=dict(size=16),
-                        xaxis={'title': 'Month'},
-                        yaxis={'title': 'Average Salary'},
-                        plot_bgcolor='#f4f4f4',  
-                        paper_bgcolor='#f4f4f4',  
-                        font=dict(color='#555'),
-                        margin=dict(l=60, r=20, t=50, b=40)
-                    )
-                },
-                style={"width": "40%", "height": "250px"}
-            ),
-
-            # Employee Performance Score Trend Line Plot
-            dcc.Graph(
-                id='performance-score-trend',
-                figure={
-                    'data': [
-                        go.Scatter(
-                            x=months,
-                            y=performance_scores,
-                            mode='lines+markers',
-                            name='Performance Score Trend',
-                            line=dict(color='#28a745')
-                        )
-                    ],
-                    'layout': go.Layout(
-                        title='Employee Performance Score Trend Over Months',
-                        titlefont=dict(size=16),
-                        xaxis={'title': 'Month'},
-                        yaxis={'title': 'Performance Score'},
-                        plot_bgcolor='#f4f4f4',  
-                        paper_bgcolor='#f4f4f4',  
-                        font=dict(color='#555'),
-                        margin=dict(l=60, r=20, t=50, b=40)
-                    )
-                },
-                style={"width": "40%", "height": "250px"}
-            ),
-            
-        ]),
-
        
+            html.Div([
+                dcc.Dropdown(
+                    id='department-dropdown',
+                    options=[
+                        {'label': 'All', 'value': 'All'},
+                        {'label': 'People & Organization', 'value': 'HR'},
+                        {'label': 'Marketing', 'value': 'Marketing'},
+                        {'label': 'Software Development', 'value': 'Software Development'},
+                        {'label': 'Accounting', 'value': 'Accounting'},
+                        {'label': 'Finance', 'value': 'Finance'},
+                    
+                    ],
+                    value='All',  
+                    clearable=False,
+                    style={'width': '100%', 'marginBottom': '10px'}
+                )
+            ], style={'width': '30%', 'marginRight': '10px', 'display': 'inline-block'}) # Dropdown in a div
+
+      
+        ], style={'display': 'flex', 'justifyContent': 'center',  'alignItems': 'center'}),
+
+      
+        html.Div([
+            html.Div([
+                html.Div(id='avg-salary-card', className='card-value', style={'fontSize': '18px', 'fontWeight': 'bold', 'color': '#333'}),
+                html.Div("Average Salary", className='card-label', style={'marginTop': '5px', 'fontSize': '12px', 'color': '#777'})
+            ], className='card', style={
+                'width': '20%', 'height': '40px', 'padding': '15px', 'textAlign': 'center', 'backgroundColor': '#fff', 
+                'margin': '10px', 'borderRadius': '8px', 'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.1)'
+            }),
+
+            html.Div([
+                html.Div(id='total-employee-card', className='card-value', style={'fontSize': '18px', 'fontWeight': 'bold', 'color': '#333'}),
+                html.Div("Total Employees", className='card-label', style={'marginTop': '5px', 'fontSize': '12px', 'color': '#777'})
+            ], className='card', style={
+                'width': '20%', 'height': '40px', 'padding': '15px', 'textAlign': 'center', 'backgroundColor': '#fff', 
+                'margin': '10px', 'borderRadius': '8px', 'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.1)'
+            }),
+
+            html.Div([
+                html.Div(id='total-salary-employees', className='card-value', style={'fontSize': '18px', 'fontWeight': 'bold', 'color': '#333'}),
+                html.Div("Total Monthly Salary of Employee", className='card-label', style={'marginTop': '5px', 'fontSize': '12px', 'color': '#777'})
+            ], className='card', style={
+                'width': '20%', 'height': '40px', 'padding': '15px', 'textAlign': 'center', 'backgroundColor': '#fff', 
+                'margin': '10px', 'borderRadius': '8px', 'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.1)'
+            }),
+
+          
+        ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center', 'marginBottom': '20px'}),
         
+         html.Div(style={'display': 'flex', 'justifyContent': 'space-around'}, children=[
+            dcc.Graph(id='avg-salary-bar'),
+            dcc.Graph(id='total-employees-bar'),
+        ])
+
+      
     ])
+
+
+    @dash_app.callback(
+        [Output('avg-salary-card', 'children'),
+         Output('total-employee-card', 'children'),
+         Output('total-salary-employees','children'),
+         Output('avg-salary-bar', 'figure'),
+         Output('total-employees-bar', 'figure'),
+       ],
+        [Input('department-dropdown', 'value')]
+    )
+    def update_price_cards(department):
+     
+        data = get_dashboard_data(department) 
+        bardata = get_dashboard_data_2(department) 
+        
+    
+        
+        
+        avg_salary_fig = go.Figure(
+            data=[
+                go.Bar(
+                    x=bardata['Department'],
+                    y=bardata['Average Salary'],
+                    name='Average Salary',
+                    marker=dict(color='#007bff')
+                )
+            ],
+            layout=go.Layout(
+                title='Average Salary by Department',
+                xaxis={'title': 'Department'},
+                yaxis={'title': 'Average Salary'},
+                plot_bgcolor='#f4f4f4',
+                paper_bgcolor='#f4f4f4',
+                font=dict(color='#555'),
+                margin=dict(l=60, r=20, t=50, b=40)
+            )
+        )
+
+        total_employees_fig = go.Figure(
+            data=[
+                go.Bar(
+                    x=bardata['Department'],
+                    y=bardata['Total Employees'],
+                    name='Total Employees',
+                    marker=dict(color='#28a745')
+                )
+            ],
+            layout=go.Layout(
+                title='Total Employees by Department',
+                xaxis={'title': 'Department'},
+                yaxis={'title': 'Total Employees'},
+                plot_bgcolor='#f4f4f4',
+                paper_bgcolor='#f4f4f4',
+                font=dict(color='#555'),
+                margin=dict(l=60, r=20, t=50, b=40)
+            )
+        )
+        
+        average_salary = data['average_salary']
+        total_employees = data['total_employees']
+        total_salary_employees = data['total_salary_employees']
+ 
+        average_salary_content = f"{average_salary:.2f} Tk"
+        total_employees_content = total_employees
+        total_salary_employees_content = f"{total_salary_employees:.2f} Tk"
+     
+            
+        return average_salary_content, total_employees_content,total_salary_employees_content,avg_salary_fig,total_employees_fig
 
     return dash_app

@@ -3,4 +3,5 @@ plotly
 pandas
 flask
 MySQL
-
+fpdf
+pdfkit

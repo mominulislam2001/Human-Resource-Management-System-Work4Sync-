@@ -1,114 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="main-container">
-            <div class="layout" style="display: flex; gap: 20px;"> <!-- Added gap between sections -->
-                <!-- Payroll Management Section -->
-                <div class="payroll-card" style="flex: 1; padding-right: 20px;">
-                    <!-- Payroll Processing Section -->
-                    <div id="payroll-processing-section">
-                        <h2>Payroll Management</h2>
-                        <form id="payroll-management-form">
-                            
-                            <!-- Employee Selection -->
-                            <div class="form-group">
-                                <label for="employee-select">Select Employee</label>
-                                <select id="employee-select" name="employee_id" required>
-                                    <option value="">Select Employee</option>
-                                    {% for employee in employees %}
-                                        <option value="{{ employee.id }}">{{ employee.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <!-- Salary Calculation -->
-                            <div class="form-group">
-                                <label for="salary">Base Salary</label>
-                                <input type="number" id="salary" name="salary" required placeholder="Enter Base Salary">
-                            </div>
-
-                            <!-- Deductions and Bonuses -->
-                            <div class="form-row">
-                                <div>
-                                    <label for="deductions">Deductions</label>
-                                    <input type="number" id="deductions" name="deductions" placeholder="Enter Deductions Amount">
-                                </div>
-                                <div>
-                                    <label for="bonuses">Bonuses</label>
-                                    <input type="number" id="bonuses" name="bonuses" placeholder="Enter Bonuses Amount">
-                                </div>
-                            </div>
-
-                            <!-- Submit Button for Payroll Processing -->
-                            <button type="submit">Process Payroll</button>
-                        </form>
-                    </div> <!-- End of payroll-processing-section -->
-
-                    <hr>
-                    <!-- Payroll History Section -->
-                    <div id="payroll-history-section">
-                        <h2>Payroll History</h2>
-                        <form id="payroll-history-form">
-                            <!-- Employee Selection for History -->
-                            <div class="form-group">
-                                <label for="history-employee-select">Select Employee</label>
-                                <select id="history-employee-select" name="history_employee_id" required>
-                                    <option value="">Select Employee</option>
-                                    {% for employee in employees %}
-                                        <option value="{{ employee.id }}">{{ employee.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <!-- Submit Button to View History -->
-                            <button type="submit">View Payroll History</button>
-                        </form>
-
-                        <!-- Display Payroll History -->
-                        <div id="history-results">
-                            <!-- This section will be populated with payroll history data -->
+<div class="container-fluid">
+    <div class="main-container">
+        <div class="layout" style="display: flex; gap: 20px;">
+            <!-- Payroll Management Section -->
+            <div class="payroll-card" style="flex: 1; padding-right: 20px;">
+                <!-- Payroll Processing Section -->
+                <div id="payroll-processing-section">
+                    <h2>Payroll Management</h2>
+                    <form id="payroll-management-form" action="{{ url_for('main.process_payroll') }}" method="POST" onsubmit="processPayroll(event);">
+                        
+                        <!-- Employee Selection -->
+                        <div class="form-group">
+                            <label for="employee-select">Select Employee</label>
+                            <select id="employee-select" name="employee_id" required>
+                                <option value="">Select Employee</option>
+                                {% for employee in employees %}
+                                    <option value="{{ employee.id }}">{{ employee.first_name + " " + employee.last_name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-                    </div> <!-- End of payroll-history-section -->
 
-                </div> <!-- End of payroll-card -->
+                        <!-- Salary Calculation -->
+                        <div class="form-group">
+                            <label for="salary">Base Salary</label>
+                            <input type="number" id="salary" name="salary" required placeholder="Enter Base Salary">
+                        </div>
 
-                <!-- Dummy Payroll Slip Section -->
-                <div class="payroll-slip" style="flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                    <h2>Payroll Slip</h2>
-                    <p><strong>Employee Name:</strong> </p>
-                    <p><strong>Position:</strong></p>
-                    <p><strong>Month:</strong></p>
+                        <!-- Deductions and Bonuses -->
+                        <div class="form-row">
+                            <div>
+                                <label for="deductions">Deductions</label>
+                                <input type="number" id="deductions" name="deductions" placeholder="Enter Deductions Amount">
+                            </div>
+                            <div>
+                                <label for="bonuses">Bonuses</label>
+                                <input type="number" id="bonuses" name="bonuses" placeholder="Enter Bonuses Amount">
+                            </div>
+                        </div>
 
-                    
-                    <p><strong>Base Salary:</strong></p>
-                    <p><strong>Deductions:</strong> </p>
-                    <p><strong>Bonuses:</strong> </p>
-                    <p><strong>Total Pay:</strong></p>
+                        <!-- Submit Button for Payroll Processing -->
+                        <button type="submit">Process Payroll</button>
+                    </form>
+                </div> <!-- End of payroll-processing-section -->
 
-                    <!-- Buttons for Download and Print -->
-                    <div class ='payment-button' style="margin-top: 20px;">
-                        <button class="btn btn-custom" onclick="downloadSlip()">Download Slip</button>
-                        <hr>
-                        <button class="btn btn-custom" onclick="printSlip()">Print Slip</button>
-                    </div>
-                </div> <!-- End of payroll-slip -->
+                <hr>
 
-            </div> <!-- End of layout -->
-        </div> <!-- End of main-container -->
-    </div> <!-- End of container-fluid -->
 
-    <!-- JavaScript functions for download and print actions -->
-    <script>
-        function downloadSlip() {
-            // Logic to download the slip (e.g., generate PDF)
-            alert('Download functionality is not implemented yet.');
-        }
 
-        function printSlip() {
-            // Logic to print the slip
-            window.print();
-        }
-    </script>
+            <!-- Payroll Slip Section -->
+            <div class="payroll-slip" style="flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                <h2>Payroll Slip</h2>
+                <p><strong>Employee Name:</strong> <span id="slip-employee-name"></span></p>
+                <p><strong>Position:</strong> <span id="slip-position"></span></p>
+                <p><strong>Month:</strong> <span id="slip-month"></span></p>
+
+                <p><strong>Base Salary:</strong> $<span id="slip-salary"></span></p>
+                <p><strong>Deductions:</strong> $<span id="slip-deductions"></span></p>
+                <p><strong>Bonuses:</strong> $<span id="slip-bonuses"></span></p>
+                <p><strong>Total Pay:</strong> $<span id="slip-total-pay"></span></p>
+
+                <!-- Buttons for Download and Print -->
+                <div class='payment-button' style="margin-top: 20px;">
+                    <button id="download-slip" class="btn btn-custom" onclick="downloadSlip()">Download Slip</button>
+                  
+                </div>
+            </div> <!-- End of payroll-slip -->
+
+        </div> <!-- End of layout -->
+    </div> <!-- End of main-container -->
+</div> <!-- End of container-fluid -->
+
 
 {% endblock %}
